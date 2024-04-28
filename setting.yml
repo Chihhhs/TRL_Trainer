@@ -1,0 +1,40 @@
+lora_config:
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.5
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+dataset:
+  name: 
+    TA: "NTTUNLPTEAM/class-textbook"
+    ATT: "jiandong/crimson-attck-vectors"
+  split: "train"
+
+model:
+  name: "mistralai/Mistral-7B-Instruct-v0.2"
+  base_model: "models/Mistral-7B"
+  
+api_tokens:
+  huggingface: "HUGGINGFACE_API_TOKEN"
+
+training_args:
+  output_dir: "models"
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 4
+  learning_rate: 0.00005
+  logging_steps: 100
+
+trainer:
+  dataset_text_field: "text"
+  max_seq_length: 512
+
+fine_tuning:
+  method: "lora" # "lora" or "full"
+
+prompt:
+  ta: 
+    ""
+  att: 
+    ""
+
