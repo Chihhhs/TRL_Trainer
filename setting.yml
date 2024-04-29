@@ -13,7 +13,7 @@ dataset:
 
 model:
   name: "mistralai/Mistral-7B-Instruct-v0.2"
-  base_model: "models/Mistral-7B"
+  finetune_model: "models/Mistral-7B"
   
 api_tokens:
   huggingface: "HUGGINGFACE_API_TOKEN"
@@ -22,7 +22,6 @@ training_args:
   output_dir: "models"
   per_device_train_batch_size: 1
   gradient_accumulation_steps: 4
-  learning_rate: 0.00005
   logging_steps: 100
 
 trainer:
