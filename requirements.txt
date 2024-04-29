@@ -1,5 +1,7 @@
 transformers
 datasets
 trl
+bitsandbytes
+accelerate
 peft
 python-dotenv
