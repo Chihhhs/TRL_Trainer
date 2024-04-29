@@ -24,16 +24,19 @@ compute_dtype = getattr(torch, "float16")
 quant_config = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=compute_dtype, bnb_4bit_use_double_quant=False)
 
 # Loading model
-model = AutoModelForCausalLM.from_pretrained(setting['model']['name'],
-                                             device_map={'': 0},
-                                             token=os.getenv("HUGGINGFACE_API_TOKEN"))
+model = AutoModelForCausalLM.from_pretrained(setting['model']['name'],device_map={'': 0},token=os.getenv("HUGGINGFACE_API_TOKEN"))
 
 tokenizer = AutoTokenizer.from_pretrained(setting['model']['name'], trust_remote_code=True)
+tokenizer.pad_token = tokenizer.eos_token
+tokenizer.padding_side = "right"
 
 # Set PEFT Parameters
-peft_params = LoraConfig(lora_alpha=setting['lora_config']['lora_alpha'], lora_dropout=setting['lora_config']['lora_dropout'], 
-                        r=setting['lora_config']['r'], bias="none", task_type="CAUSAL_LM")
-
+peft_params = LoraConfig(lora_alpha=setting['lora_config']['lora_alpha'], 
+                         lora_dropout=setting['lora_config']['lora_dropout'], 
+                         r=setting['lora_config']['r'], 
+                         bias="none", 
+                         task_type="CAUSAL_LM"
+                        )
 
 
 model = get_peft_model(model, peft_params)
@@ -56,7 +59,7 @@ training_params = TrainingArguments(
 )
 
 training_params = TrainingArguments(
-  output_dir=setting['model']['base_model'], num_train_epochs=30, per_device_train_batch_size=4, gradient_accumulation_steps=1,
+  output_dir=setting['model']['finetune_model'], num_train_epochs=30, per_device_train_batch_size=4, gradient_accumulation_steps=1,
   optim="paged_adamw_32bit", save_steps=10, logging_steps=5, learning_rate=2e-4,
   weight_decay=0.001, fp16=False, bf16=False, max_grad_norm=0.3, max_steps=-1, warmup_ratio=0.03,
   group_by_length=True, lr_scheduler_type="constant", report_to="tensorboard"

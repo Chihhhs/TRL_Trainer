@@ -17,6 +17,6 @@ tokenizer = AutoTokenizer.from_pretrained(setting['model']['name'])
 
 prompt = "What is Descript of att_id T1430.001?"
 input_ids = tokenizer.encode(prompt, return_tensors="pt")
-output = model.generate(input_ids,max_length =500)
+output = model.generate(input_ids,max_length =250)
 generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
 print(generated_text)
