@@ -31,15 +31,21 @@ tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right"
 
 # Set PEFT Parameters
-peft_params = LoraConfig(lora_alpha=setting['lora_config']['lora_alpha'], 
-                         lora_dropout=setting['lora_config']['lora_dropout'], 
-                         r=setting['lora_config']['r'], 
-                         bias="none", 
-                         task_type="CAUSAL_LM"
-                        )
-
-
-model = get_peft_model(model, peft_params)
+# Configure LoRA if fine-tuning method is 'lora'
+if 'fine_tuning' in train_setting and 'method' in train_setting['fine_tuning'] and train_setting['fine_tuning']['method'] == 'lora':
+    if 'lora_config' in train_setting:
+        peft_config = LoraConfig(
+            r=int(train_setting['lora_config'].get('r', 0)),
+            lora_alpha=int(train_setting['lora_config'].get('lora_alpha', 0)),
+            lora_dropout=float(train_setting['lora_config'].get('lora_dropout', 0.0)),
+            bias=str(train_setting['lora_config'].get('bias', '')),
+            task_type=str(train_setting['lora_config'].get('task_type', '')),
+        )
+        model = get_peft_model(model, peft_config)
+        print("LoRA method can't be used in to mergekit. Please use the full-finetuning method.")
+        print(model)
+else:
+    print(model)
 
 
 def formatting_prompts_func(data):
