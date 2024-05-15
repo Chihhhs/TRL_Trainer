@@ -20,11 +20,11 @@ import os
 dataset = load_dataset(setting['dataset']['name']['ATT'],split=setting['dataset']['split'],token=setting['api_tokens']['huggingface'])
 
 # Quantization
-compute_dtype = getattr(torch, "float16")
-quant_config = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=compute_dtype, bnb_4bit_use_double_quant=False)
+# compute_dtype = getattr(torch, "float16")
+# quant_config = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=compute_dtype, bnb_4bit_use_double_quant=False)
 
 # Loading model
-model = AutoModelForCausalLM.from_pretrained(setting['model']['name'],device_map={'': 0},token=os.getenv("HUGGINGFACE_API_TOKEN"))
+model = AutoModelForCausalLM.from_pretrained(setting['model']['name'],device_map={'': 0},token=setting['api_tokens']['huggingface'])
 
 tokenizer = AutoTokenizer.from_pretrained(setting['model']['name'], trust_remote_code=True)
 tokenizer.pad_token = tokenizer.eos_token
