@@ -6,3 +6,4 @@ accelerate
 peft
 python-dotenv
 tensorboardX
+huggingface-cli

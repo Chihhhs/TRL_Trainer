@@ -8,7 +8,7 @@ lora_config:
 dataset:
   name: 
     TA: "Xcvddax/Attack-techniques"
-    ATT: "jiandong/crimson-attck-vectors"
+    ATT: "Xcvddax/Attack-techniques"
   split: "train"
 
 model:
@@ -19,7 +19,7 @@ api_tokens:
   huggingface: "HUGGINGFACE_API_TOKEN"
 
 training_args:
-  output_dir: "models"
+  output_dir: "Attack-techniques"
   per_device_train_batch_size: 1
   gradient_accumulation_steps: 4
   logging_steps: 100

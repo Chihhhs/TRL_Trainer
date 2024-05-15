@@ -32,14 +32,14 @@ tokenizer.padding_side = "right"
 
 # Set PEFT Parameters
 # Configure LoRA if fine-tuning method is 'lora'
-if 'fine_tuning' in train_setting and 'method' in train_setting['fine_tuning'] and train_setting['fine_tuning']['method'] == 'lora':
-    if 'lora_config' in train_setting:
+if 'fine_tuning' in setting and 'method' in setting['fine_tuning'] and setting['fine_tuning']['method'] == 'lora':
+    if 'lora_config' in setting:
         peft_config = LoraConfig(
-            r=int(train_setting['lora_config'].get('r', 0)),
-            lora_alpha=int(train_setting['lora_config'].get('lora_alpha', 0)),
-            lora_dropout=float(train_setting['lora_config'].get('lora_dropout', 0.0)),
-            bias=str(train_setting['lora_config'].get('bias', '')),
-            task_type=str(train_setting['lora_config'].get('task_type', '')),
+            r=int(setting['lora_config'].get('r', 0)),
+            lora_alpha=int(setting['lora_config'].get('lora_alpha', 0)),
+            lora_dropout=float(setting['lora_config'].get('lora_dropout', 0.0)),
+            bias=str(setting['lora_config'].get('bias', '')),
+            task_type=str(setting['lora_config'].get('task_type', '')),
         )
         model = get_peft_model(model, peft_config)
         print("LoRA method can't be used in to mergekit. Please use the full-finetuning method.")
@@ -52,7 +52,7 @@ def formatting_prompts_func(dataset):
     output_texts = []
     for i in range(len(dataset)):
         text = ""
-        for key in dataset.column_names:
+        for key in dataset.keys():
             text += f" {key}: {dataset[key][i]} \n"
         output_texts.append(text)
     return output_texts
@@ -66,8 +66,7 @@ training_params = TrainingArguments(
     learning_rate=2e-4, weight_decay=0.001, fp16=False, bf16=False, max_grad_norm=0.3, max_steps=-1, warmup_ratio=0.03,
     group_by_length=True, 
     lr_scheduler_type="constant", 
-    report_to="tensorboard" ,
-    push_to_hub=setting['training_args']['push_to_hub'],
+    report_to="tensorboard"
 )
 
 
@@ -86,7 +85,7 @@ torch.cuda.empty_cache()
 
 trainer.train()
 
-trainer.push_to_hub()
+trainer.push_to_hub("Xcvddax/Attack-techniques", token=setting['api_tokens']['huggingface'])
 
 trainer.model.save_pretrained(setting["model"]["finetune_model"])
 trainer.tokenizer.save_pretrained(setting["model"]["finetune_model"])
