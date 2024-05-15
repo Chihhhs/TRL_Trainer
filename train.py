@@ -48,14 +48,14 @@ else:
     print(model)
 
 
-def formatting_prompts_func(data):
-  output_texts = []
-  for i in range(len(data)):
-      text = f"""id: {data['id'][i]}\n ,attck_id: {data['attck_id'][i]} , description: {data['description'][i]} ,
-        kill_chain_phases: {data['kill_chain_phases'][i]} , domains: {data['domains'][i]} , tactic_type: {data['tactic_type'][i]}
-        """
-      output_texts.append(text)
-  return output_texts
+def formatting_prompts_func(dataset):
+    output_texts = []
+    for i in range(len(dataset)):
+        text = ""
+        for key in dataset.column_names:
+            text += f" {key}: {dataset[key][i]} \n"
+        output_texts.append(text)
+    return output_texts
 
 training_params = TrainingArguments(
   output_dir=setting["training_args"]["output_dir"], num_train_epochs=30, per_device_train_batch_size=setting["training_args"]["per_device_train_batch_size"], gradient_accumulation_steps=setting["training_args"]["gradient_accumulation_steps"],
