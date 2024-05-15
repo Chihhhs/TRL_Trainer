@@ -8,7 +8,7 @@ filterwarnings("ignore")
 load_dotenv()
 
 
-from transformers import AutoModelForCausalLM,AutoTokenizer,TrainingArguments,BitsAndBytesConfig
+from transformers import AutoModelForCausalLM, AutoTokenizer,TrainingArguments,BitsAndBytesConfig
 import torch
 from datasets import load_dataset
 from trl import SFTTrainer
@@ -17,7 +17,7 @@ import gc
 import os
 
 # Loading Dataset
-dataset = load_dataset(setting['dataset']['name']['ATT'],split=setting['dataset']['split'],token=os.getenv("HUGGINGFACE_API_TOKEN"))
+dataset = load_dataset(setting['dataset']['name']['ATT'],split=setting['dataset']['split'],token=setting['api_tokens']['huggingface'])
 
 # Quantization
 compute_dtype = getattr(torch, "float16")
@@ -58,23 +58,22 @@ def formatting_prompts_func(dataset):
     return output_texts
 
 training_params = TrainingArguments(
-  output_dir=setting["training_args"]["output_dir"], num_train_epochs=30, per_device_train_batch_size=setting["training_args"]["per_device_train_batch_size"], gradient_accumulation_steps=setting["training_args"]["gradient_accumulation_steps"],
-  optim="paged_adamw_32bit", save_steps=10, logging_steps=setting["training_args"]["logging_steps"], learning_rate=2e-4,
-  weight_decay=0.001, fp16=False, bf16=False, max_grad_norm=0.3, max_steps=-1, warmup_ratio=0.03,
-  group_by_length=True, lr_scheduler_type="constant", report_to="tensorboard"
+    output_dir=setting["training_args"]["output_dir"], 
+    num_train_epochs=25, 
+    per_device_train_batch_size=setting["training_args"]["per_device_train_batch_size"], 
+    gradient_accumulation_steps=setting["training_args"]["gradient_accumulation_steps"],
+    optim="paged_adamw_32bit", save_steps=10, logging_steps=setting["training_args"]["logging_steps"], 
+    learning_rate=2e-4, weight_decay=0.001, fp16=False, bf16=False, max_grad_norm=0.3, max_steps=-1, warmup_ratio=0.03,
+    group_by_length=True, 
+    lr_scheduler_type="constant", 
+    report_to="tensorboard" ,
+    push_to_hub=setting['training_args']['push_to_hub'],
 )
 
-training_params = TrainingArguments(
-  output_dir=setting['model']['finetune_model'], num_train_epochs=30, per_device_train_batch_size=4, gradient_accumulation_steps=1,
-  optim="paged_adamw_32bit", save_steps=10, logging_steps=5, learning_rate=2e-4,
-  weight_decay=0.001, fp16=False, bf16=False, max_grad_norm=0.3, max_steps=-1, warmup_ratio=0.03,
-  group_by_length=True, lr_scheduler_type="constant", report_to="tensorboard"
-)
 
 trainer = SFTTrainer(
     model=model,
     train_dataset=dataset,
-    peft_config=peft_params,
     formatting_func=formatting_prompts_func,
     max_seq_length=None,
     tokenizer=tokenizer,
@@ -86,6 +85,8 @@ gc.collect()
 torch.cuda.empty_cache()
 
 trainer.train()
+
+trainer.push_to_hub()
 
 trainer.model.save_pretrained(setting["model"]["finetune_model"])
 trainer.tokenizer.save_pretrained(setting["model"]["finetune_model"])

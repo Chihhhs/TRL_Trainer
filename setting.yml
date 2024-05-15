@@ -7,13 +7,13 @@ lora_config:
 
 dataset:
   name: 
-    TA: "NTTUNLPTEAM/class-textbook"
+    TA: "Xcvddax/Attack-techniques"
     ATT: "jiandong/crimson-attck-vectors"
   split: "train"
 
 model:
-  name: "mistralai/Mistral-7B-Instruct-v0.2"
-  finetune_model: "models/Mistral-7B"
+  name: "nvidia/Llama3-ChatQA-1.5-8B"
+  finetune_model: "Xcvddax/Attack-techniques"
   
 api_tokens:
   huggingface: "HUGGINGFACE_API_TOKEN"
@@ -23,6 +23,7 @@ training_args:
   per_device_train_batch_size: 1
   gradient_accumulation_steps: 4
   logging_steps: 100
+  push_to_hub: True
 
 trainer:
   dataset_text_field: "text"
@@ -30,10 +31,3 @@ trainer:
 
 fine_tuning:
   method: "lora" # "lora" or "full"
-
-prompt:
-  ta: 
-    ""
-  att: 
-    ""
-
