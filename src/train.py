@@ -2,7 +2,7 @@ import yaml
 from warnings import filterwarnings
 from dotenv import load_dotenv
 
-setting = yaml.safe_load(open("setting.yml"))
+setting = yaml.safe_load(open("../setting.yml"))
 #print(setting)
 filterwarnings("ignore")
 load_dotenv()

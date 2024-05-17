@@ -13,16 +13,16 @@ dataset:
 
 model:
   name: "mustafaaljadery/gemma-2B-10M"
-  finetune_model: "Xcvddax/Attack-techniques"
+  finetune_model: "Xcvddax/finetuned-gemma-2B-10M"
   
 api_tokens:
   huggingface: "HUGGINGFACE_API_TOKEN"
 
 training_args:
-  output_dir: "Attack-techniques"
+  output_dir: "finetuned-gemma-2B-10M"
   per_device_train_batch_size: 1
   gradient_accumulation_steps: 4
-  logging_steps: 100
+  logging_steps: 5
   push_to_hub: True
 
 trainer:
@@ -30,4 +30,4 @@ trainer:
   max_seq_length: 512
 
 fine_tuning:
-  method: "lora" # "lora" or "full"
+  method: "full" # "lora" or "full"
