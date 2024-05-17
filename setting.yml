@@ -12,7 +12,7 @@ dataset:
   split: "train"
 
 model:
-  name: "nvidia/Llama3-ChatQA-1.5-8B"
+  name: "mustafaaljadery/gemma-2B-10M"
   finetune_model: "Xcvddax/Attack-techniques"
   
 api_tokens:
