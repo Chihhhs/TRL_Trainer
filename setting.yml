@@ -22,7 +22,7 @@ training_args:
   output_dir: "attack-gemma-7b"
   per_device_train_batch_size: 1
   gradient_accumulation_steps: 4
-  logging_steps: 20
+  logging_steps: 50
   push_to_hub: True
 
 trainer:
