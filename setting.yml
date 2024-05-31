@@ -12,14 +12,14 @@ dataset:
   split: "train"
 
 model:
-  name: "google/gemma-7b"
-  finetune_model: "attack-gemma-7b"
+  name: "meta-llama/Llama-2-7b-chat-hf"
+  finetune_model: "attack-llama-chat"
   
 api_tokens:
   huggingface: "HUGGINGFACE_API_TOKEN"
 
 training_args:
-  output_dir: "attack-gemma-7b"
+  output_dir: "attack-llama-chat"
   per_device_train_batch_size: 1
   gradient_accumulation_steps: 4
   logging_steps: 2
