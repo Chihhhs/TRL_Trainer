@@ -6,9 +6,11 @@ lora_config:
   task_type: "CAUSAL_LM"
 
 dataset:
-  name: 
-    TA: "Xcvddax/Attack-techniques"
-    ATT: "Xcvddax/Attack-techniques"
+  name:
+    tac: "Xcvddax/Attack-tactics"
+    tech: "Xcvddax/Attack-techniques"
+    mit: "Xcvddax/Attack-mitigations"
+    combine: "Xcvddax/Attack-combine"
   split: "train"
 
 model:
@@ -30,4 +32,4 @@ trainer:
   max_seq_length: 512
 
 fine_tuning:
-  method: "full" # "lora" or "full"
+  method: "lora" # "lora" or "full"
