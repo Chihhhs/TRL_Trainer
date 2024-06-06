@@ -1,6 +1,6 @@
 transformers
 datasets
-trl
+trl == 0.8.6
 bitsandbytes
 accelerate
 peft
