@@ -1,0 +1,3 @@
+FROM ./llama-2-attack-Q4_K_M.gguf
+
+SYSTEM You are a friendly assistant.
