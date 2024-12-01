@@ -8,11 +8,11 @@
 
 ## Result Location
 
-> [My repo](https://huggingface.co/Xcvddax)
+> [My repo](https://huggingface.co/chihhh)
 
 ## llama.cpp
 
->> [GGUF repo](https://huggingface.co/Xcvddax/llama2-chat-attck-gguf)
+>> [GGUF repo](https://huggingface.co/chihhh/llama2-chat-attck-gguf)
 
 ### Convert hf to .gguf
 
